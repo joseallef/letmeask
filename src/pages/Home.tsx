@@ -12,12 +12,16 @@ import { useAuth } from '../hooks/useAuth';
 
 import '../styles/auth.scss'
 import { useState } from 'react';
+import { useTheme } from '../hooks/useTheme';
 
 
 export function Home() {
   const history = useHistory();
   const { user, singInWithGoogle } = useAuth();
   const [roomCode, setRoomCode] = useState('');
+
+  const { theme, toggleTheme } = useTheme();
+
 
 
   async function handleCreateRoom() {
@@ -26,7 +30,6 @@ export function Home() {
     // auth.signInWithPopup(provider).then(result => {
     //   console.log(result);
     
-
     // })
     if (!user) {
       await singInWithGoogle();
@@ -37,6 +40,8 @@ export function Home() {
 
   async function handleJoinRoom(event: FormEvent) {
     event.preventDefault();
+
+    console.log(user, roomCode)
 
     if (roomCode.trim() === '') {
       return;
@@ -49,11 +54,16 @@ export function Home() {
       return;
     }
 
+    if (roomRef.val().endedAt) {
+      alert('Room already closed');
+      return;
+    }
+
     history.push(`/rooms/${roomCode}`);
   }
 
   return (
-    <div id="page-auth">
+    <div id="page-auth" className={theme}>
       <aside>
         <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />
         <strong>Crie salas de Q&amp;A ao-vivo</strong>
@@ -61,6 +71,8 @@ export function Home() {
       </aside>
       <main>
         <div className="main-content">
+          <h1>{theme}</h1>
+          <button onClick={toggleTheme}>Toggle</button>
           <img src={logImg} alt="Letmeask" />
           <button onClick={handleCreateRoom} className="create-room">
             <img src={googoleIconImg} alt="Logo do Google" />
