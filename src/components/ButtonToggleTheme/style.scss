@@ -1,0 +1,59 @@
+.content-toggle-theme {
+  display: flex;
+  position: absolute;
+  justify-content: flex-end;
+  align-items: flex-end;
+  top: 0;
+  right: 0;
+  flex-direction: row;
+  padding: 20px;
+  width: 100%;
+}
+
+.button-toggle-theme {
+  display: flex;
+  position: relative;
+  border: 1px solid black;
+  border-radius: 50px;
+
+  button {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 80px;
+    height: 30px !important;
+    border-radius: 50px;
+    border: 0;
+    cursor: pointer;
+
+    span {
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      background: black;
+      position: absolute;
+      transition: all 400ms;
+    }
+
+    span.light {
+      margin-left: -44px;
+    }
+
+    span.dark {
+      margin-left: 43px;
+    }
+
+    img {
+      width: 20px;
+      height: 20px;
+
+    }
+  }
+
+}
+
+@media screen and (min-width: 768px) {
+  .content-toggle-theme {
+    width: auto;
+  }
+}

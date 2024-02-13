@@ -1,13 +1,13 @@
 import { useParams } from 'react-router';
-import { useHistory } from 'react-router-dom';
-import logoImg from '../assets/images/logo.svg';
-import deleteImg from '../assets/images/delete.svg';
+import { useNavigate } from 'react-router-dom';
+import answerImg from '../assets/images/answer.svg';
 import checkImg from '../assets/images/check.svg';
-import answerImg from '../assets/images/answer.svg'
+import deleteImg from '../assets/images/delete.svg';
+import logoImg from '../assets/images/logo.svg';
 
 import Button from '../components/Button';
-import { RoomCode } from '../components/RoomCode';
 import { Question } from '../components/Question';
+import { RoomCode } from '../components/RoomCode';
 import { useRoom } from '../hooks/useRoom';
 import { database } from '../services/firebase';
 
@@ -19,7 +19,7 @@ type RoomParams = {
 
 export function AdminRoom() {
   // const { user } = useAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
   const params = useParams<RoomParams>();
   const roomId = params.id;
 
@@ -29,11 +29,11 @@ export function AdminRoom() {
       endedAt: new Date(),
     })
 
-    history.push('/');
+    navigate('/');
   }
 
   async function hadleDeleteQuestion(questionId: string) {
-    if(window.confirm('Tem certeza que você deseja excluir esta pergunta?')) {
+    if (window.confirm('Tem certeza que você deseja excluir esta pergunta?')) {
       await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
     }
 
@@ -60,13 +60,13 @@ export function AdminRoom() {
             <RoomCode code={roomId} />
             <Button isOutlined onClick={hadleEndRoom}>Encerrar sala</Button>
           </div>
-        </div> 
+        </div>
       </header>
 
       <main>
         <div className="room-title">
           <h1>Sala {title}</h1>
-          { questions.length > 0 && <span>{questions.length} pergunta(s)</span>}
+          {questions.length > 0 && <span>{questions.length} pergunta(s)</span>}
         </div>
         <div className="question-list">
           {questions.map(question => {
@@ -81,8 +81,8 @@ export function AdminRoom() {
                 {!question.isAnswered && (
                   <>
                     <button
-                    type="button"
-                    onClick={() => handleCheckQuestionAsAnswered(question.id)}
+                      type="button"
+                      onClick={() => handleCheckQuestionAsAnswered(question.id)}
                     >
                       <img src={checkImg} alt="Marcar pergunta como respondida" />
                     </button>

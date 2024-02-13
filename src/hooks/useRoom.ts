@@ -29,11 +29,11 @@ type QuestionType = {
   likeId: string | undefined;
 }
 
-export function useRoom(roomId: string) {
+export function useRoom(roomId: string | undefined) {
   const { user } = useAuth();
   const [questions, setQuestions] = useState<QuestionType[]>([]);
   const [title, setTitle] = useState('');
-  
+
   useEffect(() => {
     const roomRef = database.ref(`rooms/${roomId}`);
 
@@ -41,7 +41,7 @@ export function useRoom(roomId: string) {
       const databaseRoom = room.val();
       const firebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {};
 
-      const parsedQuestions = Object.entries(firebaseQuestions).map(([ key, value ]) => {
+      const parsedQuestions = Object.entries(firebaseQuestions).map(([key, value]) => {
         return {
           id: key,
           content: value.content,
@@ -55,7 +55,7 @@ export function useRoom(roomId: string) {
 
       setTitle(databaseRoom.title);
       setQuestions(parsedQuestions);
-      
+
     })
 
     return () => {

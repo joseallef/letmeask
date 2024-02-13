@@ -1,19 +1,23 @@
-import { FormEvent, useState} from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { FormEvent, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import illustrationImg from '../assets/images/illustration.svg';
 import logImg from '../assets/images/logo.svg';
 
-import '../styles/auth.scss'
+import '../styles/auth.scss';
 
 import Button from '../components/Button';
+import ButtonToggleTheme from '../components/ButtonToggleTheme';
 import { useAuth } from '../hooks/useAuth';
+import { useTheme } from '../hooks/useTheme';
 import { database } from '../services/firebase';
 
 export function NewRoom() {
+  const { theme } = useTheme();
   const { user } = useAuth();
-  const history = useHistory();
-  const [ newRoom, setNemRoom] = useState('');
+  const navigate = useNavigate();
+
+  const [newRoom, setNemRoom] = useState('');
 
   async function handleCreateRoom(event: FormEvent) {
     event.preventDefault();
@@ -29,18 +33,23 @@ export function NewRoom() {
       authorId: user?.id,
     })
 
-    history.push(`/rooms/${firebaseRoom.key}`);
+    navigate(`/rooms/${firebaseRoom.key}`);
 
   }
 
   return (
-    <div id="page-auth">
-      <aside>
-        <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />
+    <div id="page-auth" className={theme}>
+      <aside className={theme}>
+        <a href="/">
+          <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />
+        </a>
         <strong>Crie salas de Q&amp;A ao-vivo</strong>
         <p>Tire as dúvidas da sua audiéncia em tempo-real</p>
       </aside>
-      <main>
+
+      <main className={theme}>
+        <ButtonToggleTheme />
+
         <div className="main-content">
           <img src={logImg} alt="Letmeask" />
           <h1>{user?.name}</h1>

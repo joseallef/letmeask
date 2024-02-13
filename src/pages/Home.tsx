@@ -1,47 +1,42 @@
-import { FormEvent } from 'react';
-import { useHistory } from 'react-router-dom';
+import { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import illustrationImg from '../assets/images/illustration.svg';
-import logImg from '../assets/images/logo.svg';
 import googoleIconImg from '../assets/images/google-icon.svg';
+import illustrationImg from '../assets/images/illustration.svg';
+
+import logImg from '../assets/images/logo.svg';
 
 import { database } from '../services/firebase';
 
 import Button from '../components/Button';
 import { useAuth } from '../hooks/useAuth';
 
-import '../styles/auth.scss'
-import { useState } from 'react';
+import ButtonToggleTheme from '../components/ButtonToggleTheme';
+import { Modal } from '../components/Modal';
 import { useTheme } from '../hooks/useTheme';
-
+import '../styles/auth.scss';
 
 export function Home() {
-  const history = useHistory();
+  const { theme } = useTheme();
+
+  const navigate = useNavigate();
   const { user, singInWithGoogle } = useAuth();
+
   const [roomCode, setRoomCode] = useState('');
-
-  const { theme, toggleTheme } = useTheme();
-
-
+  const [contentModal, setContentModal] = useState<string>('');
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   async function handleCreateRoom() {
-    // const provider = new firebase.auth.GoogleAuthProvider();
-
-    // auth.signInWithPopup(provider).then(result => {
-    //   console.log(result);
-    
-    // })
     if (!user) {
       await singInWithGoogle();
     }
 
-    history.push('/rooms/new');
+    navigate('/rooms/new');
   }
 
   async function handleJoinRoom(event: FormEvent) {
     event.preventDefault();
 
-    console.log(user, roomCode)
 
     if (roomCode.trim() === '') {
       return;
@@ -50,29 +45,42 @@ export function Home() {
     const roomRef = await database.ref(`rooms/${roomCode}`).get();
 
     if (!roomRef.exists()) {
-      alert('Room does not exists');
+      setContentModal('Room does not exists');
+      setOpenModal(true);
       return;
     }
 
     if (roomRef.val().endedAt) {
-      alert('Room already closed');
+      setContentModal('RRoom already closed');
+      setOpenModal(true);
       return;
     }
 
-    history.push(`/rooms/${roomCode}`);
+    navigate(`/rooms/${roomCode}`);
   }
 
   return (
     <div id="page-auth" className={theme}>
-      <aside>
+
+      {openModal && (
+        <Modal
+          title='Aviso'
+          text={contentModal}
+          setOpenModal={setOpenModal}
+        />
+      )}
+
+      <aside className={theme}>
         <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />
         <strong>Crie salas de Q&amp;A ao-vivo</strong>
         <p>Tire as dúvidas da sua audiéncia em tempo-real</p>
       </aside>
-      <main>
+
+
+      <main className={theme}>
+        <ButtonToggleTheme />
+
         <div className="main-content">
-          <h1>{theme}</h1>
-          <button onClick={toggleTheme}>Toggle</button>
           <img src={logImg} alt="Letmeask" />
           <button onClick={handleCreateRoom} className="create-room">
             <img src={googoleIconImg} alt="Logo do Google" />
