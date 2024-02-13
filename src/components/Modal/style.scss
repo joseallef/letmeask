@@ -1,0 +1,60 @@
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+  flex-direction: column;
+  background: #2c21218c;
+  overflow-y: hidden;
+  padding: 8px;
+
+
+  .modal-content {
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+
+
+    .modal-header {
+      margin: 10px 20px;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      // justify-content: space-between;
+      // align-items: center;
+
+      .modal-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+
+      .modal-close {
+        display: flex;
+        justify-content: flex-end;
+        padding: 0 4px;
+        cursor: pointer;
+      }
+
+    }
+
+    .modal-body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 10px;
+    }
+
+    @media screen and (min-width:576px) {
+      max-width: 600px;
+    }
+  }
+}
