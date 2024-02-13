@@ -1,0 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  background: #f8f8f8;
+  color: #29292e;
+}
+
+body,
+input,
+button,
+textarea {
+  font: 400 16px 'Roboto', sans-serif;
+}
+
+.dark {
+  background: #050508;
+  transition: all 400ms;
+}
+
+.light {
+  background: #f8f8f8;
+  transition: all 400ms;
+}
